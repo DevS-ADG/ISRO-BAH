@@ -1,0 +1,3 @@
+[console_scripts]
+astra-run = scripts.run_pipeline:main
+astra-train = scripts.run_training:main

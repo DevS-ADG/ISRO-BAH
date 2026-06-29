@@ -1,0 +1,9 @@
+2026-06-29 18:05:07 [DEBUG   ] astra.preprocessing.normalization [normalization.py:54] normalize_flux: Normalized flux by factor 1000.000000 (method=median)
+2026-06-29 18:05:07 [DEBUG   ] astra.preprocessing.normalization [normalization.py:109] sigma_clip: Sigma clipping (3.0σ): removed 1/100 points (1.0%)
+2026-06-29 18:05:07 [DEBUG   ] astra.extraction.phase_fold [phase_fold.py:135] phase_fold: Phase fold: period=3.0000d, 9 transits stacked, 333 in-transit points, 1000 bins
+2026-06-29 18:05:07 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:49] find_gaps: Found 2 continuous segments (1 gaps > 0.5 days)
+2026-06-29 18:05:07 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:49] find_gaps: Found 1 continuous segments (0 gaps > 0.5 days)
+2026-06-29 18:05:08 [WARNING ] astra.utils.stellar       [stellar_utils.py:58] estimate_stellar_mass: Invalid stellar parameters (Teff=nan, R_star=nan), defaulting to solar mass
+2026-06-29 18:05:08 [INFO    ] astra.vetting.odd_even    [odd_even.py:102] test_odd_even: Odd-even test FAILED: σ=11129.84 > 3.0 (depth_odd=0.05000, depth_even=0.01000) → ECLIPSING_BINARY
+2026-06-29 18:05:08 [DEBUG   ] astra.vetting.physical_limits [physical_limits.py:89] test_physical_limits: Physical limits passed: R_planet=10.9 R_Earth, T_eq=1263 K
+2026-06-29 18:05:08 [INFO    ] astra.vetting.physical_limits [physical_limits.py:67] test_physical_limits: Physical limits FAILED: R_planet=54.5 R_Earth > 25.0 → STELLAR_COMPANION

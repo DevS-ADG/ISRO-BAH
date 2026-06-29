@@ -1,0 +1,3 @@
+2026-06-29 17:50:10 [INFO    ] astra.pipeline            [pipeline.py:98] _load_config: Configuration loaded from config/config.yaml
+2026-06-29 17:50:10 [INFO    ] astra.pipeline            [pipeline.py:223] run_single_star: Processing single star: TIC 307210830
+2026-06-29 17:51:03 [ERROR   ] astra.pipeline            [pipeline.py:247] run_single_star: No light curve found for TIC 307210830 in sector 1

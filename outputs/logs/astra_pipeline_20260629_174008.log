@@ -1,0 +1,36 @@
+2026-06-29 17:40:08 [INFO    ] astra.pipeline            [pipeline.py:98] _load_config: Configuration loaded from config/config.yaml
+2026-06-29 17:40:08 [INFO    ] astra.pipeline            [pipeline.py:223] run_single_star: Processing single star: TIC 259377017
+2026-06-29 17:40:18 [DEBUG   ] astra.ingestion.quality_filter [quality_filter.py:145] apply_quality_filter: Quality filter passed: 12974 points, CROWDSAP=0.992, RMS=0.00132, activity_flag=False
+2026-06-29 17:40:18 [DEBUG   ] astra.preprocessing.normalization [normalization.py:101] sigma_clip: Sigma clipping converged at iteration 2
+2026-06-29 17:40:18 [DEBUG   ] astra.preprocessing.normalization [normalization.py:109] sigma_clip: Sigma clipping (5.0σ): removed 1/12974 points (0.0%)
+2026-06-29 17:40:18 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:49] find_gaps: Found 2 continuous segments (1 gaps > 0.5 days)
+2026-06-29 17:40:18 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:102] segment_light_curve: Segmented light curve into 2 valid segments (from 2 total)
+2026-06-29 17:40:24 [DEBUG   ] astra.preprocessing.normalization [normalization.py:54] normalize_flux: Normalized flux by factor 0.999989 (method=median)
+2026-06-29 17:40:24 [DEBUG   ] astra.preprocessing.detrending [detrending.py:203] detrend_light_curve: Detrending complete: 12973 points, 2 segments, 1 clipped, method=biweight, window=0.75d
+2026-06-29 17:40:24 [ERROR   ] astra.detection.bls_search [bls_search.py:159] run_bls_search: BLS search failed: The maximum transit duration must be shorter than the minimum period
+Traceback (most recent call last):
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\astra\detection\bls_search.py", line 105, in run_bls_search
+    periodogram = model.power(periods, durations)
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\venv\Lib\site-packages\astropy\timeseries\periodograms\bls\core.py", line 287, in power
+    period, duration = self._validate_period_and_duration(period, duration)
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\venv\Lib\site-packages\astropy\timeseries\periodograms\bls\core.py", line 723, in _validate_period_and_duration
+    raise ValueError(
+        "The maximum transit duration must be shorter than the minimum period"
+    )
+ValueError: The maximum transit duration must be shorter than the minimum period
+2026-06-29 17:40:24 [ERROR   ] astra.detection.tls_search [tls_search.py:164] run_tls_search: TLS search failed: cannot write to unmasked output
+Traceback (most recent call last):
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\astra\detection\tls_search.py", line 92, in run_tls_search
+    mask &= np.isfinite(flux_err)
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\venv\Lib\site-packages\astropy\utils\masked\core.py", line 847, in __array_ufunc__
+    raise TypeError("cannot write to unmasked output")
+TypeError: cannot write to unmasked output
+2026-06-29 17:40:24 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:166] search_multi_planet: TIC 259377017 candidate 1: SNR=0.0 < 5.0 → DISCARDED
+2026-06-29 17:40:24 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:207] search_multi_planet: TIC 259377017: No TCEs found above SNR threshold
+2026-06-29 17:40:24 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 17:40:24 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 17:40:24 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 17:40:24 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 17:40:27 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 17:40:27 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only

@@ -1,0 +1,47 @@
+2026-06-29 17:48:17 [INFO    ] astra.pipeline            [pipeline.py:98] _load_config: Configuration loaded from config/config.yaml
+2026-06-29 17:48:17 [INFO    ] astra.pipeline            [pipeline.py:223] run_single_star: Processing single star: TIC 149603524
+2026-06-29 17:48:26 [DEBUG   ] astra.ingestion.quality_filter [quality_filter.py:145] apply_quality_filter: Quality filter passed: 18278 points, CROWDSAP=0.985, RMS=0.00241, activity_flag=False
+2026-06-29 17:48:26 [DEBUG   ] astra.preprocessing.normalization [normalization.py:101] sigma_clip: Sigma clipping converged at iteration 5
+2026-06-29 17:48:26 [DEBUG   ] astra.preprocessing.normalization [normalization.py:109] sigma_clip: Sigma clipping (5.0σ): removed 560/18278 points (3.1%)
+2026-06-29 17:48:26 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:49] find_gaps: Found 2 continuous segments (1 gaps > 0.5 days)
+2026-06-29 17:48:26 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:102] segment_light_curve: Segmented light curve into 2 valid segments (from 2 total)
+2026-06-29 17:48:27 [DEBUG   ] astra.preprocessing.normalization [normalization.py:54] normalize_flux: Normalized flux by factor 1.000002 (method=median)
+2026-06-29 17:48:27 [DEBUG   ] astra.preprocessing.detrending [detrending.py:203] detrend_light_curve: Detrending complete: 17718 points, 2 segments, 560 clipped, method=biweight, window=0.75d
+2026-06-29 17:48:29 [DEBUG   ] astra.detection.bls_search [bls_search.py:157] run_bls_search: BLS: P=0.5001d, depth=0.00053, SNR=119.2, power=3436.6659, n_transits=55
+2026-06-29 17:48:30 [ERROR   ] astra.detection.tls_search [tls_search.py:164] run_tls_search: TLS search failed: M_star_max >= M_star required
+Traceback (most recent call last):
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\astra\detection\tls_search.py", line 105, in run_tls_search
+    tls_results = model.power(
+        period_min=period_min,
+    ...<4 lines>...
+        use_threads=1,  # Avoid nested parallelism
+    )
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\venv\Lib\site-packages\transitleastsquares\main.py", line 53, in power
+    self, kwargs = validate_args(self, kwargs)
+                   ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\DEV\Downloads\ISRO-BAH-main\venv\Lib\site-packages\transitleastsquares\validate.py", line 159, in validate_args
+    raise ValueError("M_star_max >= M_star required")
+ValueError: M_star_max >= M_star required
+2026-06-29 17:48:30 [INFO    ] astra.detection.multi_planet [multi_planet.py:192] search_multi_planet: TIC 149603524 candidate 1: P=0.5001d, depth=0.00053, SNR=119.2, n_transits=55 → TCE
+2026-06-29 17:48:30 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:121] search_multi_planet: TIC 149603524: Too few points remaining (4) after 1 candidates
+2026-06-29 17:48:30 [DEBUG   ] astra.extraction.phase_fold [phase_fold.py:135] phase_fold: Phase fold: period=0.5001d, 55 transits stacked, 17714 in-transit points, 50 bins
+2026-06-29 17:48:30 [DEBUG   ] astra.vetting.odd_even    [odd_even.py:107] test_odd_even: Odd-even test passed: σ=1.02 ≤ 3.0
+2026-06-29 17:48:30 [DEBUG   ] astra.vetting.secondary_eclipse [secondary_eclipse.py:56] test_secondary_eclipse: Secondary eclipse test: insufficient data points
+2026-06-29 17:48:30 [DEBUG   ] astra.vetting.centroid    [centroid.py:52] test_centroid_shift: Centroid test: TPF not available, skipping
+2026-06-29 17:48:30 [DEBUG   ] astra.vetting.shape_analysis [shape_analysis.py:71] test_shape_analysis: Shape test: flat_bottom_ratio=0.517, ingress_symmetry=-0.264
+2026-06-29 17:48:30 [INFO    ] astra.vetting.duration_check [duration_check.py:84] test_duration_consistency: Duration check soft flag: ratio=7.03 (observed=12.00h, expected=1.71h) outside [0.3, 3.0]
+2026-06-29 17:48:30 [DEBUG   ] astra.vetting.physical_limits [physical_limits.py:89] test_physical_limits: Physical limits passed: R_planet=3.1 R_Earth, T_eq=2703 K
+2026-06-29 17:48:30 [INFO    ] astra.vetting             [__init__.py:256] run_all_vetting: Vetting summary: PASSED (4 passed, 0 failed, 1 flagged) 
+2026-06-29 17:48:30 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 17:48:30 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 17:48:30 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 17:48:30 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 17:48:31 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 17:48:31 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only
+2026-06-29 17:48:31 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 17:48:31 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 17:48:31 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 17:48:31 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 17:48:31 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 17:48:31 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only
+2026-06-29 17:48:31 [WARNING ] astra.pipeline            [pipeline.py:545] _run_classification: ML classifiers not available — skipping classification

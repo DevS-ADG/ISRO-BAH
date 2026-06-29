@@ -1,0 +1,105 @@
+# Master Configuration for ASTRA Pipeline
+# Automated Signal Transit Recognition Algorithm
+# All tunable parameters are defined here. No magic numbers in source code.
+
+pipeline:
+  sector: null           # TESS sector number (set at runtime)
+  n_cores: 4
+  checkpoint_enabled: true
+  checkpoint_dir: "data/checkpoints/"
+  batch_size: 1000       # Stars per checkpoint flush
+
+ingestion:
+  cadence: "short"       # 2-minute cadence
+  mission: "TESS"
+  max_stars: 30000
+  download_retries: 3
+  retry_backoff_base: 2.0  # Exponential backoff base in seconds
+
+preprocessing:
+  sigma_clip_threshold: 5.0
+  detrend_method: "biweight"   # biweight or spline
+  detrend_window_days: 0.75
+  min_datapoints: 100
+  min_crowdsap: 0.5
+  max_rms_threshold: 0.05      # Stellar activity flag threshold
+  gap_threshold_days: 0.5      # Minimum gap to segment
+
+detection:
+  period_min_days: 0.5
+  period_max_days: 13.0
+  snr_threshold: 7.0
+  snr_discard_threshold: 5.0
+  snr_batman_threshold: 10.0
+  n_trial_periods: 19500
+  max_planets_per_star: 5
+  duration_min_fraction: 0.05   # Fraction of period for min duration
+  duration_max_fraction: 0.5    # Fraction of period for max duration
+
+vetting:
+  odd_even_sigma_threshold: 3.0
+  secondary_eclipse_sigma_threshold: 3.0
+  centroid_shift_sigma_threshold: 3.0
+  shape_flat_bottom_min_ratio: 0.05
+  duration_ratio_min: 0.3
+  duration_ratio_max: 3.0
+  r_planet_max_earth_radii: 25.0
+  t_eq_max_kelvin: 4000.0
+
+classification:
+  confidence_planet_threshold: 0.80
+  confidence_marginal_threshold: 0.50
+  multiplicity_boost_enabled: true
+  multiplicity_boost_cap: 0.95
+  ensemble_weight_xgb: 0.6
+  ensemble_weight_cnn: 0.4
+  rf_n_estimators: 500
+  rf_min_samples_split: 5
+  xgb_n_estimators: 300
+  xgb_max_depth: 6
+  xgb_learning_rate: 0.05
+  xgb_subsample: 0.8
+  xgb_colsample_bytree: 0.8
+  cnn_input_length: 256
+  cnn_embedding_dim: 128
+  cnn_batch_size: 64
+  cnn_learning_rate: 0.001
+  cnn_patience: 10
+  cnn_max_epochs: 200
+
+batman_fitting:
+  snr_threshold_for_fit: 10.0
+  confidence_threshold_for_fit: 0.80
+  optimizer: "differential_evolution"
+  mcmc_enabled: true
+  mcmc_nwalkers: 32
+  mcmc_nsteps: 500
+  mcmc_burnin: 200
+  # Parameter bounds
+  rp_rs_min: 0.001
+  rp_rs_max: 0.3
+  a_rs_min: 1.5
+  a_rs_max: 100.0
+  b_min: 0.0
+  b_max: 1.2
+  t0_tolerance: 0.1       # +/- days around initial estimate
+  period_tolerance: 0.01   # Fractional tolerance around initial period
+  u_min: 0.0
+  u_max: 1.0
+
+reporting:
+  tier1_snr_min: 10.0
+  tier1_confidence_min: 0.90
+  tier2_snr_min: 7.0
+  tier2_confidence_min: 0.80
+  generate_plots_tiers: [1, 2]
+  output_dir: "outputs/"
+  plot_dpi: 300
+
+training:
+  train_fraction: 0.70
+  val_fraction: 0.15
+  test_fraction: 0.15
+  random_seed: 42
+  use_smote: true
+  labels_path: "data/labels/labels.csv"

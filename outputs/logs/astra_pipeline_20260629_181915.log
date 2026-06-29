@@ -1,0 +1,50 @@
+2026-06-29 18:19:15 [INFO    ] astra.pipeline            [pipeline.py:98] _load_config: Configuration loaded from config/config.yaml
+2026-06-29 18:19:15 [INFO    ] astra.pipeline            [pipeline.py:223] run_single_star: Processing single star: TIC 237913194
+2026-06-29 18:19:27 [DEBUG   ] astra.ingestion.quality_filter [quality_filter.py:145] apply_quality_filter: Quality filter passed: 15211 points, CROWDSAP=0.987, RMS=0.00224, activity_flag=False
+2026-06-29 18:19:27 [DEBUG   ] astra.preprocessing.normalization [normalization.py:101] sigma_clip: Sigma clipping converged at iteration 2
+2026-06-29 18:19:27 [DEBUG   ] astra.preprocessing.normalization [normalization.py:109] sigma_clip: Sigma clipping (5.0σ): removed 2/15211 points (0.0%)
+2026-06-29 18:19:27 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:49] find_gaps: Found 2 continuous segments (1 gaps > 0.5 days)
+2026-06-29 18:19:27 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:102] segment_light_curve: Segmented light curve into 2 valid segments (from 2 total)
+2026-06-29 18:19:28 [DEBUG   ] astra.preprocessing.normalization [normalization.py:54] normalize_flux: Normalized flux by factor 1.000000 (method=median)
+2026-06-29 18:19:28 [DEBUG   ] astra.preprocessing.detrending [detrending.py:203] detrend_light_curve: Detrending complete: 15209 points, 2 segments, 2 clipped, method=biweight, window=0.75d
+2026-06-29 18:19:30 [DEBUG   ] astra.detection.bls_search [bls_search.py:163] run_bls_search: BLS: P=11.6406d, depth=0.00612, SNR=18.4, power=163.7608, n_transits=2
+2026-06-29 18:19:46 [DEBUG   ] astra.detection.tls_search [tls_search.py:161] run_tls_search: TLS: P=7.5857d, SDE=9.8, depth=0.00312, duration=0.0215d, n_transits=4
+2026-06-29 18:19:46 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:276] _combine_bls_tls: TIC 237913194 cand 1: using TLS (SDE=9.8, P=7.5857d)
+2026-06-29 18:19:46 [INFO    ] astra.detection.multi_planet [multi_planet.py:208] search_multi_planet: TIC 237913194 candidate 1: P=7.5857d, depth=0.00312, SNR=10.9, n_transits=4 → TCE
+2026-06-29 18:19:48 [DEBUG   ] astra.detection.bls_search [bls_search.py:163] run_bls_search: BLS: P=7.5843d, depth=0.00313, SNR=14.1, power=88.1889, n_transits=3
+2026-06-29 18:20:02 [DEBUG   ] astra.detection.tls_search [tls_search.py:161] run_tls_search: TLS: P=7.5857d, SDE=11.5, depth=0.00297, duration=0.0417d, n_transits=4
+2026-06-29 18:20:02 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:276] _combine_bls_tls: TIC 237913194 cand 2: using TLS (SDE=11.5, P=7.5857d)
+2026-06-29 18:20:02 [INFO    ] astra.detection.multi_planet [multi_planet.py:208] search_multi_planet: TIC 237913194 candidate 2: P=7.5857d, depth=0.00297, SNR=12.0, n_transits=4 → TCE
+2026-06-29 18:20:05 [DEBUG   ] astra.detection.bls_search [bls_search.py:163] run_bls_search: BLS: P=7.5793d, depth=0.00308, SNR=8.5, power=32.6539, n_transits=3
+2026-06-29 18:20:19 [DEBUG   ] astra.detection.tls_search [tls_search.py:161] run_tls_search: TLS: P=2.1665d, SDE=6.4, depth=0.00109, duration=0.0085d, n_transits=11
+2026-06-29 18:20:19 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:276] _combine_bls_tls: TIC 237913194 cand 3: using TLS (SDE=6.4, P=2.1665d)
+2026-06-29 18:20:19 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:182] search_multi_planet: TIC 237913194 candidate 3: SNR=3.9 < 5.0 → DISCARDED
+2026-06-29 18:20:19 [DEBUG   ] astra.extraction.phase_fold [phase_fold.py:135] phase_fold: Phase fold: period=7.5857d, 3 transits stacked, 60 in-transit points, 1000 bins
+2026-06-29 18:20:19 [INFO    ] astra.vetting.odd_even    [odd_even.py:102] test_odd_even: Odd-even test FAILED: σ=7.08 > 3.0 (depth_odd=0.00670, depth_even=0.00034) → ECLIPSING_BINARY
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.secondary_eclipse [secondary_eclipse.py:91] test_secondary_eclipse: Secondary eclipse test passed: σ=-0.27 ≤ 3.0
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.centroid    [centroid.py:52] test_centroid_shift: Centroid test: TPF not available, skipping
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.shape_analysis [shape_analysis.py:71] test_shape_analysis: Shape test: flat_bottom_ratio=nan, ingress_symmetry=nan
+2026-06-29 18:20:19 [INFO    ] astra.vetting.duration_check [duration_check.py:84] test_duration_consistency: Duration check soft flag: ratio=0.13 (observed=0.52h, expected=3.95h) outside [0.3, 3.0]
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.physical_limits [physical_limits.py:89] test_physical_limits: Physical limits passed: R_planet=6.9 R_Earth, T_eq=959 K
+2026-06-29 18:20:19 [INFO    ] astra.vetting             [__init__.py:256] run_all_vetting: Vetting summary: REJECTED (3 passed, 1 failed, 1 flagged) cause=ECLIPSING_BINARY_ODD_EVEN
+2026-06-29 18:20:19 [DEBUG   ] astra.extraction.phase_fold [phase_fold.py:135] phase_fold: Phase fold: period=7.5857d, 3 transits stacked, 118 in-transit points, 1000 bins
+2026-06-29 18:20:19 [INFO    ] astra.vetting.odd_even    [odd_even.py:102] test_odd_even: Odd-even test FAILED: σ=29.58 > 3.0 (depth_odd=0.00606, depth_even=-0.00014) → ECLIPSING_BINARY
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.secondary_eclipse [secondary_eclipse.py:91] test_secondary_eclipse: Secondary eclipse test passed: σ=-0.66 ≤ 3.0
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.centroid    [centroid.py:52] test_centroid_shift: Centroid test: TPF not available, skipping
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.shape_analysis [shape_analysis.py:71] test_shape_analysis: Shape test: flat_bottom_ratio=0.600, ingress_symmetry=-1.000
+2026-06-29 18:20:19 [INFO    ] astra.vetting.duration_check [duration_check.py:84] test_duration_consistency: Duration check soft flag: ratio=0.25 (observed=1.00h, expected=3.95h) outside [0.3, 3.0]
+2026-06-29 18:20:19 [DEBUG   ] astra.vetting.physical_limits [physical_limits.py:89] test_physical_limits: Physical limits passed: R_planet=6.7 R_Earth, T_eq=959 K
+2026-06-29 18:20:19 [INFO    ] astra.vetting             [__init__.py:256] run_all_vetting: Vetting summary: REJECTED (3 passed, 1 failed, 1 flagged) cause=ECLIPSING_BINARY_ODD_EVEN
+2026-06-29 18:20:19 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 18:20:19 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 18:20:19 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 18:20:19 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 18:20:20 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 18:20:20 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only
+2026-06-29 18:20:20 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 18:20:20 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 18:20:20 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 18:20:20 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 18:20:20 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 18:20:20 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only
+2026-06-29 18:20:20 [WARNING ] astra.pipeline            [pipeline.py:545] _run_classification: ML classifiers not available — skipping classification

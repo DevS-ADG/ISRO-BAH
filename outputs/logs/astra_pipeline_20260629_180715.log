@@ -1,0 +1,39 @@
+2026-06-29 18:07:15 [INFO    ] astra.pipeline            [pipeline.py:98] _load_config: Configuration loaded from config/config.yaml
+2026-06-29 18:07:15 [INFO    ] astra.pipeline            [pipeline.py:223] run_single_star: Processing single star: TIC 149603524
+2026-06-29 18:07:21 [DEBUG   ] astra.ingestion.quality_filter [quality_filter.py:145] apply_quality_filter: Quality filter passed: 18278 points, CROWDSAP=0.985, RMS=0.00241, activity_flag=False
+2026-06-29 18:07:21 [DEBUG   ] astra.preprocessing.normalization [normalization.py:101] sigma_clip: Sigma clipping converged at iteration 5
+2026-06-29 18:07:21 [DEBUG   ] astra.preprocessing.normalization [normalization.py:109] sigma_clip: Sigma clipping (5.0σ): removed 560/18278 points (3.1%)
+2026-06-29 18:07:21 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:49] find_gaps: Found 2 continuous segments (1 gaps > 0.5 days)
+2026-06-29 18:07:21 [DEBUG   ] astra.preprocessing.gap_handler [gap_handler.py:102] segment_light_curve: Segmented light curve into 2 valid segments (from 2 total)
+2026-06-29 18:07:22 [DEBUG   ] astra.preprocessing.normalization [normalization.py:54] normalize_flux: Normalized flux by factor 1.000002 (method=median)
+2026-06-29 18:07:22 [DEBUG   ] astra.preprocessing.detrending [detrending.py:203] detrend_light_curve: Detrending complete: 17718 points, 2 segments, 560 clipped, method=biweight, window=0.75d
+2026-06-29 18:07:24 [DEBUG   ] astra.detection.bls_search [bls_search.py:163] run_bls_search: BLS: P=4.4122d, depth=0.00328, SNR=17.7, power=167.6629, n_transits=6
+2026-06-29 18:07:46 [DEBUG   ] astra.detection.tls_search [tls_search.py:161] run_tls_search: TLS: P=8.8288d, SDE=17.6, depth=0.00133, duration=0.0314d, n_transits=4
+2026-06-29 18:07:46 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:276] _combine_bls_tls: TIC 149603524 cand 1: using TLS (SDE=17.6, P=8.8288d)
+2026-06-29 18:07:46 [INFO    ] astra.detection.multi_planet [multi_planet.py:208] search_multi_planet: TIC 149603524 candidate 1: P=8.8288d, depth=0.00133, SNR=9.3, n_transits=4 → TCE
+2026-06-29 18:07:49 [DEBUG   ] astra.detection.bls_search [bls_search.py:163] run_bls_search: BLS: P=4.4122d, depth=0.00286, SNR=12.1, power=76.7912, n_transits=6
+2026-06-29 18:08:08 [DEBUG   ] astra.detection.tls_search [tls_search.py:161] run_tls_search: TLS: P=4.4150d, SDE=6.1, depth=0.00059, duration=0.0288d, n_transits=7
+2026-06-29 18:08:08 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:276] _combine_bls_tls: TIC 149603524 cand 2: using TLS (SDE=6.1, P=4.4150d)
+2026-06-29 18:08:08 [DEBUG   ] astra.detection.multi_planet [multi_planet.py:193] search_multi_planet: TIC 149603524 candidate 2: SNR=6.1 → MARGINAL (no vetting/ML)
+2026-06-29 18:08:08 [DEBUG   ] astra.extraction.phase_fold [phase_fold.py:135] phase_fold: Phase fold: period=8.8288d, 3 transits stacked, 39 in-transit points, 972 bins
+2026-06-29 18:08:08 [DEBUG   ] astra.vetting.odd_even    [odd_even.py:107] test_odd_even: Odd-even test passed: σ=0.37 ≤ 3.0
+2026-06-29 18:08:08 [INFO    ] astra.vetting.secondary_eclipse [secondary_eclipse.py:86] test_secondary_eclipse: Secondary eclipse test FAILED: σ=7.82 > 3.0, depth_ratio=1.842 → ECLIPSING_BINARY
+2026-06-29 18:08:08 [DEBUG   ] astra.vetting.centroid    [centroid.py:52] test_centroid_shift: Centroid test: TPF not available, skipping
+2026-06-29 18:08:08 [DEBUG   ] astra.vetting.shape_analysis [shape_analysis.py:71] test_shape_analysis: Shape test: flat_bottom_ratio=nan, ingress_symmetry=nan
+2026-06-29 18:08:08 [INFO    ] astra.vetting.duration_check [duration_check.py:84] test_duration_consistency: Duration check soft flag: ratio=0.18 (observed=0.75h, expected=4.30h) outside [0.3, 3.0]
+2026-06-29 18:08:08 [DEBUG   ] astra.vetting.physical_limits [physical_limits.py:89] test_physical_limits: Physical limits passed: R_planet=4.8 R_Earth, T_eq=1038 K
+2026-06-29 18:08:08 [INFO    ] astra.vetting             [__init__.py:256] run_all_vetting: Vetting summary: REJECTED (3 passed, 1 failed, 1 flagged) cause=ECLIPSING_BINARY_SECONDARY
+2026-06-29 18:08:08 [DEBUG   ] astra.extraction.phase_fold [phase_fold.py:135] phase_fold: Phase fold: period=4.4150d, 6 transits stacked, 84 in-transit points, 974 bins
+2026-06-29 18:08:08 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 18:08:08 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 18:08:08 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 18:08:08 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 18:08:10 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 18:08:10 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only
+2026-06-29 18:08:10 [WARNING ] astra.classification.rf_classifier [rf_classifier.py:159] load: RF model not found at models\rf_phase1
+2026-06-29 18:08:10 [WARNING ] astra.pipeline            [pipeline.py:113] _load_classifiers: RF model not found — classification will be skipped
+2026-06-29 18:08:10 [WARNING ] astra.classification.xgb_classifier [xgb_classifier.py:174] load: XGBoost model not found at models\xgboost_phase2
+2026-06-29 18:08:10 [WARNING ] astra.pipeline            [pipeline.py:118] _load_classifiers: XGBoost model not found — classification will be skipped
+2026-06-29 18:08:10 [WARNING ] astra.classification.cnn_classifier [cnn_classifier.py:211] load: CNN weights not found at models\cnn_phase2\cnn_weights.pt
+2026-06-29 18:08:10 [WARNING ] astra.pipeline            [pipeline.py:123] _load_classifiers: CNN model not found — will use XGBoost only
+2026-06-29 18:08:10 [WARNING ] astra.pipeline            [pipeline.py:545] _run_classification: ML classifiers not available — skipping classification

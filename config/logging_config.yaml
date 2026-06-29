@@ -1,0 +1,85 @@
+# Logging Configuration for ASTRA Pipeline
+
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  standard:
+    format: "%(asctime)s [%(levelname)-8s] %(name)-25s: %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  detailed:
+    format: "%(asctime)s [%(levelname)-8s] %(name)-25s [%(filename)s:%(lineno)d] %(funcName)s: %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: standard
+    stream: ext://sys.stdout
+
+  file_main:
+    class: logging.FileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: "outputs/logs/astra_pipeline.log"
+    mode: a
+    encoding: utf-8
+
+  file_errors:
+    class: logging.FileHandler
+    level: ERROR
+    formatter: detailed
+    filename: "outputs/logs/errors.log"
+    mode: a
+    encoding: utf-8
+
+loggers:
+  astra:
+    level: DEBUG
+    handlers: [console, file_main, file_errors]
+    propagate: false
+
+  astra.ingestion:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.preprocessing:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.detection:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.extraction:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.vetting:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.classification:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.reporting:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+  astra.training:
+    level: DEBUG
+    handlers: [console, file_main]
+    propagate: false
+
+root:
+  level: WARNING
+  handlers: [console]
