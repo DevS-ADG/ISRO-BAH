@@ -227,7 +227,7 @@ class ASTRAPipeline:
 
         from astra.ingestion.downloader import TESSDownloader
 
-        sector = sector or self.config["pipeline"].get("sector", 1)
+        sector_val = sector if sector is not None else self.config["pipeline"].get("sector")
         ing_cfg = self.config["ingestion"]
 
         downloader = TESSDownloader(
@@ -241,16 +241,17 @@ class ASTRAPipeline:
         search = lk.search_lightcurve(
             f"TIC {tic_id}",
             mission="TESS",
-            sector=sector,
+            sector=sector_val,
             cadence=ing_cfg["cadence"],
             author="SPOC",
         )
 
         if len(search) == 0:
-            logger.error(f"No light curve found for TIC {tic_id} in sector {sector}")
+            logger.error(f"No light curve found for TIC {tic_id} in sector {sector_val}")
             return []
 
         lc = search[0].download()
+        actual_sector = search[0].sector if hasattr(search[0], 'sector') else (sector_val or 1)
         if lc is None:
             logger.error(f"Download failed for TIC {tic_id}")
             return []
@@ -262,7 +263,7 @@ class ASTRAPipeline:
             "crowdsap": float(lc.meta.get("CROWDSAP", np.nan)),
         }
 
-        candidates = self._process_single_star(tic_id, meta, sector, lc_obj=lc)
+        candidates = self._process_single_star(tic_id, meta, actual_sector, lc_obj=lc)
 
         # Run classification
         self._load_classifiers()
@@ -503,6 +504,7 @@ class ASTRAPipeline:
                 "batman_fit": False,
                 "multiplicity_boost_applied": False,
                 "notes": "",
+                "r_planet_earth_radii": features.get("r_planet_earth", np.nan) if features else np.nan,
                 "_features": features,
                 "_feature_array": features_to_array(features) if features else np.full(19, np.nan),
                 "_cnn_input": cnn_input,

@@ -84,7 +84,7 @@ class XGBMultiClassifier:
         if self.model is None:
             self.build()
 
-        X_imputed = self._impute_nan(X)
+        X_imputed = self._impute_nan(X, fit=True)
         X_scaled = self.scaler.fit_transform(X_imputed)
 
         # Dynamically set num_class and objective based on unique classes in y
@@ -163,6 +163,8 @@ class XGBMultiClassifier:
         self.model_dir.mkdir(parents=True, exist_ok=True)
         joblib.dump(self.model, self.model_dir / "xgb_model.joblib")
         joblib.dump(self.scaler, self.model_dir / "xgb_scaler.joblib")
+        if hasattr(self, 'imputer') and self.imputer is not None:
+            joblib.dump(self.imputer, self.model_dir / "xgb_imputer.joblib")
         logger.info(f"XGBoost model saved to {self.model_dir}")
 
     def load(self) -> bool:
@@ -175,23 +177,34 @@ class XGBMultiClassifier:
 
         model_path = self.model_dir / "xgb_model.joblib"
         scaler_path = self.model_dir / "xgb_scaler.joblib"
+        imputer_path = self.model_dir / "xgb_imputer.joblib"
 
         if model_path.exists() and scaler_path.exists():
             self.model = joblib.load(model_path)
             self.scaler = joblib.load(scaler_path)
+            if imputer_path.exists():
+                self.imputer = joblib.load(imputer_path)
+            else:
+                self.imputer = None
             logger.info(f"XGBoost model loaded from {self.model_dir}")
             return True
 
         logger.warning(f"XGBoost model not found at {self.model_dir}")
         return False
 
-    @staticmethod
-    def _impute_nan(X: np.ndarray) -> np.ndarray:
+    def _impute_nan(self, X: np.ndarray, fit: bool = False) -> np.ndarray:
         """Replace NaN with column medians."""
+        from sklearn.impute import SimpleImputer
+        if not hasattr(self, 'imputer') or self.imputer is None:
+            self.imputer = SimpleImputer(strategy='median')
+            
         X_copy = X.copy()
         for col in range(X_copy.shape[1]):
             mask = np.isnan(X_copy[:, col])
-            if np.any(mask):
-                median_val = np.nanmedian(X_copy[:, col])
-                X_copy[mask, col] = median_val if np.isfinite(median_val) else 0.0
-        return X_copy
+            if np.all(mask):
+                X_copy[:, col] = 0.0 # Fill entirely NaN columns with 0
+                
+        if fit:
+            return self.imputer.fit_transform(X_copy)
+        else:
+            return self.imputer.transform(X_copy)

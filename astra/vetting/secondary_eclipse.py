@@ -89,4 +89,6 @@ def test_secondary_eclipse(
         )
     else:
         logger.debug(
+            f"Secondary eclipse test PASSED: sigma={sigma_secondary:.2f} <= {sigma_threshold}"
+        )
     return flag_fired, float(sigma_secondary), float(secondary_depth_ratio), hard_reject
