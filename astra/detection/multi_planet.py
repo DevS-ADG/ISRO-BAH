@@ -208,7 +208,7 @@ def search_multi_planet(
             logger.info(
                 f"TIC {tic_id} candidate {candidate_num}: "
                 f"P={tce.period:.4f}d, depth={tce.depth:.5f}, "
-                f"SNR={tce.snr:.1f}, n_transits={tce.n_transits} → TCE"
+                f"SNR={tce.snr:.1f}, n_transits={tce.n_transits} -> TCE"
             )
 
             # ── Mask in-transit data for next iteration ─────────────────

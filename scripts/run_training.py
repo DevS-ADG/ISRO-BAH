@@ -78,8 +78,14 @@ def main():
     }
     # Filter out NOISE for multi-class training
     signal_mask = merged["label"] != "NOISE"
-    multi_features = merged[signal_mask]
-    multi_labels = multi_features["label"].map(label_map_multi).values
+    multi_features = merged[signal_mask].copy()
+    multi_labels_raw = multi_features["label"].map(label_map_multi).values
+
+    # Re-encode to contiguous integers in case some classes are absent
+    from sklearn.preprocessing import LabelEncoder
+    le = LabelEncoder()
+    multi_labels = le.fit_transform(multi_labels_raw)
+    print(f"  Multi-class labels present: {dict(zip(le.classes_, range(len(le.classes_))))}")
 
     train_cfg = config.get("training", {})
 

@@ -63,10 +63,7 @@ class XGBMultiClassifier:
             learning_rate=self.learning_rate,
             subsample=self.subsample,
             colsample_bytree=self.colsample_bytree,
-            objective="multi:softprob",
-            num_class=4,
             eval_metric="mlogloss",
-            use_label_encoder=False,
             random_state=42,
             n_jobs=-1,
             tree_method="hist",
@@ -90,6 +87,13 @@ class XGBMultiClassifier:
         X_imputed = self._impute_nan(X)
         X_scaled = self.scaler.fit_transform(X_imputed)
 
+        # Dynamically set num_class and objective based on unique classes in y
+        n_classes = len(set(y.tolist()))
+        if n_classes == 2:
+            self.model.set_params(objective="binary:logistic")
+        else:
+            self.model.set_params(objective="multi:softprob", num_class=n_classes)
+
         # Compute sample weights for class imbalance
         from sklearn.utils.class_weight import compute_sample_weight
         sample_weights = compute_sample_weight("balanced", y)
@@ -100,8 +104,15 @@ class XGBMultiClassifier:
         from sklearn.metrics import classification_report, accuracy_score
 
         y_pred = self.model.predict(X_scaled)
+        # y_pred may be one-hot encoded for multi-class — handle both
+        if y_pred.ndim > 1:
+            y_pred = np.argmax(y_pred, axis=1)
         accuracy = accuracy_score(y, y_pred)
-        report = classification_report(y, y_pred, target_names=CLASS_NAMES)
+
+        # Build target names only for classes that are present
+        present_classes = sorted(set(y.tolist()))
+        present_names = [CLASS_NAMES[c] if c < len(CLASS_NAMES) else str(c) for c in present_classes]
+        report = classification_report(y, y_pred, labels=present_classes, target_names=present_names)
 
         logger.info(f"XGBoost training accuracy: {accuracy:.4f}")
         logger.info(f"\n{report}")

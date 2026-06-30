@@ -1,0 +1,48 @@
+ASTRA — Random Forest Phase 1 Training Report
+============================================================
+
+Training samples: 653
+Validation samples: 140
+Test samples: 140
+
+Validation Accuracy: 0.9786
+Validation AUC: 0.9659
+
+Test Accuracy: 0.9929
+Test AUC: 0.6033
+
+Classification Report (Test Set):
+              precision    recall  f1-score   support
+
+       NOISE       0.99      1.00      1.00       138
+      SIGNAL       1.00      0.50      0.67         2
+
+    accuracy                           0.99       140
+   macro avg       1.00      0.75      0.83       140
+weighted avg       0.99      0.99      0.99       140
+
+
+Confusion Matrix:
+[[138   0]
+ [  1   1]]
+
+Feature Importances:
+  crowdsap                  0.2191
+  oot_rms                   0.1711
+  t_eff                     0.0923
+  period                    0.0772
+  t_eq                      0.0734
+  r_star                    0.0667
+  odd_even_sigma            0.0601
+  n_transit                 0.0496
+  r_planet_earth            0.0420
+  duration                  0.0332
+  duration_ratio            0.0252
+  depth                     0.0206
+  chi2_ratio                0.0134
+  flat_bottom_ratio         0.0131
+  secondary_depth_ratio     0.0129
+  impact_param_proxy        0.0113
+  snr                       0.0105
+  ingress_symmetry          0.0079
+  centroid_shift            0.0000

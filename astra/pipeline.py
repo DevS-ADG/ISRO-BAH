@@ -184,6 +184,9 @@ class ASTRAPipeline:
         result.n_stars_processed = len(metadata_df)
         result.n_tces = len(all_candidates)
 
+        # ── Save features and CNN inputs for training ────────────────────
+        self._save_training_data(all_candidates)
+
         # ── Stage 3: Classification ─────────────────────────────────────
         with StageLogger("classification") as stage:
             all_candidates = self._run_classification(all_candidates)
@@ -529,6 +532,62 @@ class ASTRAPipeline:
             candidates.append(candidate)
 
         return candidates
+
+    def _save_training_data(self, candidates: list[dict]) -> None:
+        """Save feature vectors and CNN inputs to disk for ML training.
+
+        Writes:
+            data/candidates/features.csv — 19 features + TIC_ID + candidate_number.
+            data/candidates/phase_folded_curves.npy — CNN input vectors.
+
+        Args:
+            candidates: List of candidate dictionaries from processing stage.
+        """
+        from astra.extraction.feature_extractor import FEATURE_NAMES
+
+        if not candidates:
+            logger.warning("No candidates to save for training")
+            return
+
+        candidates_dir = Path("data/candidates")
+        candidates_dir.mkdir(parents=True, exist_ok=True)
+
+        # Build feature rows
+        feature_rows = []
+        cnn_inputs = []
+
+        for cand in candidates:
+            features = cand.get("_features", {})
+            if not features:
+                continue
+
+            row = {
+                "TIC_ID": cand.get("TIC_ID", 0),
+                "candidate_number": cand.get("candidate_number", 0),
+            }
+            for fname in FEATURE_NAMES:
+                row[fname] = features.get(fname, np.nan)
+            feature_rows.append(row)
+
+            cnn_input = cand.get("_cnn_input")
+            if cnn_input is not None:
+                cnn_inputs.append(cnn_input)
+
+        if feature_rows:
+            features_df = pd.DataFrame(feature_rows)
+            features_path = candidates_dir / "features.csv"
+            features_df.to_csv(features_path, index=False)
+            logger.info(
+                f"Saved {len(features_df)} feature vectors to {features_path}"
+            )
+
+        if cnn_inputs:
+            curves_array = np.array(cnn_inputs)
+            curves_path = candidates_dir / "phase_folded_curves.npy"
+            np.save(curves_path, curves_array)
+            logger.info(
+                f"Saved {len(cnn_inputs)} CNN input curves to {curves_path}"
+            )
 
     def _run_classification(self, candidates: list[dict]) -> list[dict]:
         """Run ML classification on vetted candidates."""

@@ -49,36 +49,59 @@ class TESSDownloader:
         self.download_retries = download_retries
         self.retry_backoff_base = retry_backoff_base
 
-    def search_sector(self, sector: int) -> lk.SearchResult:
-        """Search MAST for all light curves in a TESS sector.
+    def search_sector(self, sector: int) -> list[int]:
+        """Search MAST for all TIC IDs with light curves in a TESS sector.
+
+        Uses astroquery to query the MAST observations database for TESS
+        time-series data in the given sector. Returns a deduplicated list
+        of TIC IDs.
 
         Args:
             sector: TESS sector number.
 
         Returns:
-            lightkurve SearchResult containing available light curves.
+            List of integer TIC IDs found in the sector.
         """
         logger.info(
             f"Searching MAST for sector {sector}, "
             f"cadence={self.cadence}, mission={self.mission}"
         )
 
-        # Search for all targets in the sector
-        search_result = lk.search_lightcurve(
-            f"sector {sector}",
-            mission=self.mission,
-            cadence=self.cadence,
-            author="SPOC",  # Science Processing Operations Center pipeline
-        )
+        try:
+            from astroquery.mast import Observations
 
-        n_results = len(search_result)
-        logger.info(f"Found {n_results} light curves in sector {sector}")
+            # Query MAST for all TESS time-series observations in this sector
+            obs_table = Observations.query_criteria(
+                obs_collection="TESS",
+                dataproduct_type="timeseries",
+                sequence_number=sector,
+                project="TESS",
+            )
 
-        if n_results > self.max_stars:
-            logger.info(f"Limiting to {self.max_stars} stars (max_stars config)")
-            search_result = search_result[: self.max_stars]
+            if obs_table is None or len(obs_table) == 0:
+                logger.warning(f"No observations found for sector {sector}")
+                return []
 
-        return search_result
+            # Extract TIC IDs from target_name column (format: "TIC 123456789")
+            import re
+            tic_ids = set()
+            for target_name in obs_table["target_name"]:
+                match = re.search(r"(\d{5,})", str(target_name))
+                if match:
+                    tic_ids.add(int(match.group(1)))
+
+            tic_list = sorted(tic_ids)
+            logger.info(f"Found {len(tic_list)} unique TIC IDs in sector {sector}")
+
+            if len(tic_list) > self.max_stars:
+                logger.info(f"Limiting to {self.max_stars} stars (max_stars config)")
+                tic_list = tic_list[: self.max_stars]
+
+            return tic_list
+
+        except Exception as e:
+            logger.error(f"MAST query failed: {e}")
+            return []
 
     def download_light_curve(
         self, search_row: Any, sector: int
@@ -140,6 +163,9 @@ class TESSDownloader:
     def download_sector(self, sector: int) -> pd.DataFrame:
         """Download all light curves for a TESS sector.
 
+        First queries MAST for TIC IDs in the sector, then downloads
+        each light curve individually via lightkurve.
+
         Args:
             sector: TESS sector number.
 
@@ -147,26 +173,51 @@ class TESSDownloader:
             DataFrame indexed by TIC_ID with columns:
             file_path, ra, dec, tmag, teff, r_star, crowdsap.
         """
-        search_result = self.search_sector(sector)
+        tic_ids = self.search_sector(sector)
+
+        if not tic_ids:
+            logger.warning("No TIC IDs found for this sector")
+            return pd.DataFrame()
 
         metadata_records: list[dict] = []
         n_success = 0
         n_failed = 0
 
-        for i, row in enumerate(search_result):
-            file_path, metadata = self.download_light_curve(row, sector)
+        for i, tic_id in enumerate(tic_ids):
+            try:
+                # Search for this specific star's light curve
+                search_result = lk.search_lightcurve(
+                    f"TIC {tic_id}",
+                    mission=self.mission,
+                    sector=sector,
+                    cadence=self.cadence,
+                    author="SPOC",
+                )
 
-            if file_path is not None:
-                metadata["file_path"] = str(file_path)
-                metadata_records.append(metadata)
-                n_success += 1
-            else:
+                if len(search_result) == 0:
+                    n_failed += 1
+                    continue
+
+                # Download using existing retry logic
+                file_path, metadata = self.download_light_curve(
+                    search_result[0], sector
+                )
+
+                if file_path is not None:
+                    metadata["file_path"] = str(file_path)
+                    metadata_records.append(metadata)
+                    n_success += 1
+                else:
+                    n_failed += 1
+
+            except Exception as e:
+                logger.warning(f"Failed to process TIC {tic_id}: {e}")
                 n_failed += 1
 
-            # Log progress every 100 stars
-            if (i + 1) % 100 == 0:
+            # Log progress every 50 stars
+            if (i + 1) % 50 == 0:
                 logger.info(
-                    f"Download progress: {i + 1}/{len(search_result)} "
+                    f"Download progress: {i + 1}/{len(tic_ids)} "
                     f"({n_success} success, {n_failed} failed)"
                 )
 

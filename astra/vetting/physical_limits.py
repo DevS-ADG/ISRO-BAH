@@ -66,7 +66,7 @@ def test_physical_limits(
         rejection_cause = "STELLAR_COMPANION"
         logger.info(
             f"Physical limits FAILED: R_planet={r_planet_val:.1f} R_Earth > "
-            f"{r_planet_max} → STELLAR_COMPANION"
+            f"{r_planet_max} -> STELLAR_COMPANION"
         )
 
     # ── Equilibrium temperature check ───────────────────────────────────
@@ -82,7 +82,7 @@ def test_physical_limits(
             rejection_cause = "PHYSICALLY_EVAPORATED"
             logger.info(
                 f"Physical limits FAILED: T_eq={t_eq_val:.0f} K > "
-                f"{t_eq_max} → PHYSICALLY_EVAPORATED"
+                f"{t_eq_max} -> PHYSICALLY_EVAPORATED"
             )
 
     if not flag_fired:

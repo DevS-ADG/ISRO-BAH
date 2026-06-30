@@ -95,7 +95,10 @@ def train_xgb_classifier(
     except ValueError:
         test_auc = np.nan
 
-    test_report = classification_report(y_test, test_labels, target_names=CLASS_NAMES)
+    # Use only the classes that appear in the test set
+    present_classes = sorted(set(y_test.tolist()))
+    present_names = [CLASS_NAMES[c] if c < len(CLASS_NAMES) else str(c) for c in present_classes]
+    test_report = classification_report(y_test, test_labels, labels=present_classes, target_names=present_names)
     test_cm = confusion_matrix(y_test, test_labels)
 
     logger.info(f"Test accuracy: {test_accuracy:.4f}, AUC: {test_auc:.4f}")

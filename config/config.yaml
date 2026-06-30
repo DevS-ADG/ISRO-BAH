@@ -12,7 +12,7 @@ pipeline:
 ingestion:
   cadence: "short"       # 2-minute cadence
   mission: "TESS"
-  max_stars: 30000
+  max_stars: 500
   download_retries: 3
   retry_backoff_base: 2.0  # Exponential backoff base in seconds
 

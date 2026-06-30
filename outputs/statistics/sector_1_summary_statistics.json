@@ -1,0 +1,12 @@
+{
+  "sector": 1,
+  "total_stars_processed": 500,
+  "stars_passed_quality": 500,
+  "total_tces": 1209,
+  "hard_rejected": 375,
+  "classified_by_ml": 834,
+  "tier1_count": 0,
+  "tier2_count": 0,
+  "tier3_count": 0,
+  "false_positives": 375
+}

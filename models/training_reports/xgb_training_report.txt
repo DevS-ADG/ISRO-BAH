@@ -1,0 +1,22 @@
+ASTRA — XGBoost Phase 2 Training Report
+============================================================
+
+Classes: ['PLANET', 'ECLIPSING_BINARY', 'BLEND', 'OTHER']
+Training samples: 11
+Validation: accuracy=1.0000, AUC=nan
+Test: accuracy=0.6667, AUC=nan
+
+Classification Report (Test Set):
+                  precision    recall  f1-score   support
+
+          PLANET       0.67      1.00      0.80         2
+ECLIPSING_BINARY       0.00      0.00      0.00         1
+
+        accuracy                           0.67         3
+       macro avg       0.33      0.50      0.40         3
+    weighted avg       0.44      0.67      0.53         3
+
+
+Confusion Matrix:
+[[2 0]
+ [1 0]]

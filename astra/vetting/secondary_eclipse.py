@@ -84,12 +84,9 @@ def test_secondary_eclipse(
 
     if hard_reject:
         logger.info(
-            f"Secondary eclipse test FAILED: σ={sigma_secondary:.2f} > {sigma_threshold}, "
-            f"depth_ratio={secondary_depth_ratio:.3f} → ECLIPSING_BINARY"
+            f"Secondary eclipse test FAILED: sigma={sigma_secondary:.2f} > "
+            f"{sigma_threshold}, depth_ratio={secondary_depth_ratio:.3f} -> ECLIPSING_BINARY"
         )
     else:
         logger.debug(
-            f"Secondary eclipse test passed: σ={sigma_secondary:.2f} ≤ {sigma_threshold}"
-        )
-
     return flag_fired, float(sigma_secondary), float(secondary_depth_ratio), hard_reject
